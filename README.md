@@ -35,7 +35,7 @@ The framework supports:
 
 ---
 
-## 🚀 How to Run
+## How to Run
 
 ### 1. Compile
 
@@ -55,12 +55,14 @@ http://localhost:8080
 
 ---
 
-## 🌐 Example Endpoint
+## Example Endpoint
 http://localhost:8080/greeting?name=Jeimy
 
 Response:
 
 Hola Jeimy
+
+<img width="554" height="189" alt="image" src="https://github.com/user-attachments/assets/aa5de622-f088-4506-96ae-6e3616b47b42" />
 
 ---
 
