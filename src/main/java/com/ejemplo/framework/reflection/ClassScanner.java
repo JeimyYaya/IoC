@@ -13,20 +13,36 @@ public class ClassScanner {
         List<Class<?>> controllers = new ArrayList<>();
 
         try {
-            // Ej: com.ejemplo → com/ejemplo
             String packagePath = basePackage.replace(".", "/");
 
-            // Ruta física en Maven
-            String baseDir = "target/classes/" + packagePath;
+            // Obtener classpath completo
+            String classPath = System.getProperty("java.class.path");
 
-            File directory = new File(baseDir);
+            String[] paths = classPath.split(File.pathSeparator);
 
-            if (!directory.exists()) {
-                System.out.println("⚠ Directory not found: " + directory.getAbsolutePath());
+            String basePath = null;
+
+            for (String path : paths) {
+                // buscamos una ruta válida de clases (evitamos test-classes)
+                if (path.endsWith("classes") && !path.contains("test-classes")) {
+                    basePath = path;
+                    break;
+                }
+            }
+
+            if (basePath == null) {
+                System.out.println("No valid classpath found");
                 return controllers;
             }
 
-            scanDirectory(directory, basePackage, controllers);
+            File baseDir = new File(basePath + "/" + packagePath);
+
+            if (!baseDir.exists()) {
+                System.out.println("Directory not found: " + baseDir.getAbsolutePath());
+                return controllers;
+            }
+
+            scanDirectory(baseDir, basePackage, controllers);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +73,7 @@ public class ClassScanner {
                         System.out.println("Found controller: " + className);
                     }
 
-                } catch (Throwable e) {
+                } catch (Throwable ignored) {
                 }
             }
         }
