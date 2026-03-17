@@ -15,7 +15,6 @@ public class ClassScanner {
         try {
             String packagePath = basePackage.replace(".", "/");
 
-            // Obtener classpath completo
             String classPath = System.getProperty("java.class.path");
 
             String[] paths = classPath.split(File.pathSeparator);
@@ -23,7 +22,6 @@ public class ClassScanner {
             String basePath = null;
 
             for (String path : paths) {
-                // buscamos una ruta válida de clases (evitamos test-classes)
                 if (path.endsWith("classes") && !path.contains("test-classes")) {
                     basePath = path;
                     break;
@@ -31,14 +29,14 @@ public class ClassScanner {
             }
 
             if (basePath == null) {
-                System.out.println("No valid classpath found");
+                System.out.println("⚠ No valid classpath found");
                 return controllers;
             }
 
             File baseDir = new File(basePath + "/" + packagePath);
 
             if (!baseDir.exists()) {
-                System.out.println("Directory not found: " + baseDir.getAbsolutePath());
+                System.out.println("⚠ Directory not found: " + baseDir.getAbsolutePath());
                 return controllers;
             }
 
